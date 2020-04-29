@@ -5,4 +5,6 @@ source = requests.get('https://facens.br/home').text
 
 soup = BeautifulSoup(source, 'lxml')
 
-print(soup.prettify())
+body_text = soup.body.text
+
+print(body_text)
