@@ -1,10 +1,31 @@
 from bs4 import BeautifulSoup
 import requests
+import string
+import urllib
 
-source = requests.get('https://facens.br/home').text
+source = []
+final_text=""
+bairros=[]
+ruas = []
+source.append(requests.get('https://g1.globo.com/sp/sao-paulo/noticia/2020/02/20/chuvas-colocam-zona-leste-de-sp-em-estado-de-atencao-para-alagamentos.ghtml').text)
+source.append(requests.get('https://noticias.uol.com.br/cotidiano/ultimas-noticias/2020/02/10/pontos-alagamentos-regioes-sao-paulo-chuva.htm').text)
+source.append(requests.get('https://g1.globo.com/sp/sao-paulo/noticia/2020/02/10/veja-pontos-de-alagamentos-em-manha-de-chuva-em-sp.ghtml').text)
 
-soup = BeautifulSoup(source, 'lxml')
+for link in source:
+    soup = BeautifulSoup(link, 'lxml')
 
-body_text = soup.body.text
+    final_text=final_text + soup.body.text.upper()
 
-print(body_text)
+with open("bairrosSP.txt") as f:
+    for line in f:
+        if line.upper() in final_text:
+            bairros.append(line)
+            break        
+
+with open("ruasSPsemPrefixo.txt") as f:
+    for line in f:
+        if line.upper() in final_text:
+            ruas.append(line)
+print(bairros)
+print("---------")
+print(ruas)
