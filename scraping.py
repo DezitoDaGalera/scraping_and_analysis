@@ -10,18 +10,13 @@ class scraper:
 
     def text_scraper(self):
         
-
-        source = []
         final_text=""
-        
-        source.append(requests.get('https://g1.globo.com/sp/sao-paulo/noticia/2020/02/20/chuvas-colocam-zona-leste-de-sp-em-estado-de-atencao-para-alagamentos.ghtml').text)
-        source.append(requests.get('https://noticias.uol.com.br/cotidiano/ultimas-noticias/2020/02/10/pontos-alagamentos-regioes-sao-paulo-chuva.htm').text)
-        source.append(requests.get('https://g1.globo.com/sp/sao-paulo/noticia/2020/02/10/veja-pontos-de-alagamentos-em-manha-de-chuva-em-sp.ghtml').text)
 
-        for link in source:
-            soup = BeautifulSoup(link, 'lxml')
+        search = requests.get(r"https://www.cgesp.org/v3/alagamentos.jsp")
 
-            final_text=final_text + soup.body.text.upper()
+        soup = BeautifulSoup(search.text, 'lxml')
+
+        final_text=final_text + soup.body.text.upper()
 
         return final_text
 
@@ -33,7 +28,7 @@ class matcher:
         data_parser = parser()
         data = data_parser.parse()
         text_scraper = scraper()
-        final_text = scraper.text_scraper()
+        final_text = text_scraper.text_scraper()
         locations = []
 
         for info in data:
